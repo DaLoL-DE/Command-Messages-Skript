@@ -1,0 +1,33 @@
+#__________________________
+#|                         |
+#|   Skript made by        |
+#|       DaLoL             |
+#|_________________________|
+
+command /dc:
+	trigger:
+		send "&9discord.gg/invite/81037193813"
+
+# Template: (to Copy)
+#
+#command /(your command)
+   #trigger: 	
+       #send "&aYour Message"       
+
+# when you copy remove the "#"
+
+#Automessages:
+on every 120 seconds:
+	broadcast ""
+	broadcast "&8» &cYou can Edit this message in the essentials.sk"
+	broadcast ""
+
+#Template: (To Copy)
+#on every (your time in seconds):
+	#broadcast "Your Message"
+	#broadcast "Your Message"
+	#broadcast "Your Message"
+
+#When you will have an empty row than type nothing in it like: ""
+#you can also use Color Codes!
+# when you copy remove the "#"

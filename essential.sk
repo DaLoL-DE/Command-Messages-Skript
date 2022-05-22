@@ -6,30 +6,33 @@
 
 command /dc:
 	trigger:
-		send "&9discord.gg/invite/81037193813"
+		send "&8[&6Discord&8] &7Join our Discord server now! &9&ndiscord.gg/"
 
-# Template: (to Copy)
-#
-#command /(your command)
-   #trigger: 	
-       #send "&aYour Message"       
+#Template:
 
-# when you copy remove the "#"
+#command /(your command):
+	trigger:
+		send "&aYour Message"
+
+#Remove the "#" when you paste it.
 
 #Automessages:
+
 on every 120 seconds:
 	broadcast ""
 	broadcast "&8» &cYou can Edit this message in the essential.sk"
 	broadcast ""
-	cancel event
 
 #Template: (To Copy)
+
 #on every (your time in seconds):
 	#broadcast "Your Message"
 	#broadcast "Your Message"
 	#broadcast "Your Message"
 
 #When you will have an empty row than type nothing in it like: ""
+#Remove the "#" when you paste it.
+
 
 #Join-Leave Messages
 
@@ -39,9 +42,10 @@ on join:
 on leave:
 	broadcast "&8[&c-&8] &7%player%"
 
+#you need an plugin or an other skript to remove the normal join messages!
+
 #Custom Death Messages
 
 on death of player:
-	broadcast "&8[&6Server&8] &7%victim% &9died&7."
-
+	broadcast "&8[&&Server&8] &7%victim% &9died."
 

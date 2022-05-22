@@ -41,7 +41,7 @@ on leave:
 
 #Custom Death Messages
 
-on death:
-	broadcast "&8[&6Server&8] &7%player% &9died&7."
+on death of player:
+	broadcast "&8[&6Server&8] &7%victim% &9died&7."
 
 

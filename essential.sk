@@ -11,8 +11,8 @@ command /dc:
 #Template:
 
 #command /(your command):
-	trigger:
-		send "&aYour Message"
+	#trigger:
+		#send "&aYour Message"
 
 #Remove the "#" when you paste it.
 
@@ -47,5 +47,11 @@ on leave:
 #Custom Death Messages
 
 on death of player:
-	broadcast "&8[&&Server&8] &7%victim% &9died."
+	broadcast "&8[&6Server&8] &7%victim% &9died."
 
+#advertising Command
+command /ad <text>:
+	permission: ad.use
+	permission message: &cYou haven't the Permissions for that!
+	trigger:
+		broadcast "&8[&6Ad&8] &7%arg-1% &8(&2%player%&8)"

@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0b2       |
+#|     Version 1.0b3       |
 #|_________________________|
 
 options:
@@ -130,6 +130,41 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Youre on the latest Version of Essential Skript"
+		send "&8[&6Version&8] &7Your on the version 1.0b3."
 		send "&cYour on Beta report bugs at: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
+
+command /repair:
+	permission: repair.use
+	trigger:
+		repair tool of player
+		send "&8[&6Repair&8] &7Your tool has been repaired!"
+
+
+command /feed [<player>]:
+	permission: feed.use
+	trigger:
+		if arg-1 is not set:
+			send "&8[&6Feed&8] &7You have now no more hunger"
+			set food bar of player to 20
+		else:
+			send "&8[&6Feed&8] &7%arg-1% have no more hunger!"
+			set food bar of arg-1 to 20
+
+
+command /head [<offlineplayer>]:
+	trigger:
+		if arg-1 is set:
+			give 1 of skull of "%arg-1%" parsed as offline player named "&eHead of %arg-1%" to player
+			send "&8[&6Head&8] &7You've become the head of %arg-1%!"
+		else:
+			send "&8[&6Head&8] &7Please define a Player!"
+
+
+command /msg [<player>] [<text>]:
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				send "&8[&6You &8» &6%arg-1%&8] &7%arg-2%"
+				send "&8[&6%arg-1% &8» &6You&8] &7%arg-2%" to player
+
 

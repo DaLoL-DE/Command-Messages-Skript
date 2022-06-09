@@ -2,7 +2,13 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
+#|     Version 0.6         |
 #|_________________________|
+
+options:
+	prefix: &8[&6Server&8]
+
+
 
 command /dc:
 	trigger:
@@ -47,7 +53,7 @@ on leave:
 #Custom Death Messages
 
 on death of player:
-	broadcast "&8[&6Server&8] &7%victim% &9died."
+	broadcast "{@prefix} &7%victim% &9died."
 
 #advertising Command
 command /ad <text>:
@@ -55,3 +61,16 @@ command /ad <text>:
 	permission message: &cYou haven't the Permissions for that!
 	trigger:
 		broadcast "&8[&6Ad&8] &7%arg-1% &8(&2%player%&8)"
+
+# Invsee Command
+
+command /invsee [<player>]:
+	permission: invsee.use
+	permission message: &cYou haven't the permission for that!
+	trigger:
+		if arg-1 is set:
+			open the arg-1's inventory for the player
+			send "{@prefix} &7You opened &a%arg-1%'s &7inventory."
+		if arg-1 is not set:
+			send "{@prefix} &7Please define a player."    
+

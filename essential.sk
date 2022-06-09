@@ -2,11 +2,16 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 0.6         |
+#|     Version 1.0b2       |
 #|_________________________|
 
 options:
 	prefix: &8[&6Server&8]
+	alert: &8[&6Alert&8]
+	ping: &8[&e&l!&8]
+	msg: &8[&6MSG&8]
+	heal: &8[&6Heal&8]
+	time: &8[&6Time&8]
 
 
 
@@ -43,10 +48,10 @@ on every 120 seconds:
 #Join-Leave Messages
 
 on join:
-	broadcast "&8[&a+&8] &7%player%"
+	set join message to "&8[&a+&8] &a%player%"
 
-on leave:
-	broadcast "&8[&c-&8] &7%player%"
+on quit:
+	set quit message to "&8[&c-&8] &c%player%"
 
 #you need an plugin or an other skript to remove the normal join messages!
 
@@ -73,4 +78,58 @@ command /invsee [<player>]:
 			send "{@prefix} &7You opened &a%arg-1%'s &7inventory."
 		if arg-1 is not set:
 			send "{@prefix} &7Please define a player."    
+
+command /alert [<text>]:
+	permission: alert.use
+	permission message: &cYou haven't the permission for that!
+	trigger:
+		if arg-1 is set:
+			broadcast "{@alert} &7%arg-1%"
+		if arg-1 is not set:
+			send "{@alert} &7Please define a message!"
+
+command /ping [<player>]:
+	permission: use.ping
+	permission message: {@ping} &cYou haven't the permission for that!
+	trigger:
+		if arg-1 is set:
+			send "{@ping} &e&l%arg-1%: &e&l%arg-1's ping%ms"
+		else:
+			send "{@ping} &e&l%player's ping%ms"
+
+
+
+command /heal [<player>]:
+	permission: heal.use
+	permission: {@heal} &cYou haven't the permission for that!
+	trigger:
+		if arg-1 is set:
+			heal the arg-1
+			send "{@heal} &7You healed &a%arg-1%&7."
+		if arg-1 is not set:
+			heal the player
+			send "{@heal} &7You've been healed"
+
+
+command /day:
+	permission: day.use
+	permission message: {@time} &cYou haven't the permission for that!
+	trigger: 
+		send "{@time} &7Its now &aDay&7."
+		set time to 08:00
+
+
+command /night:
+	permission: night.use
+	permission message: {@time} &cYou haven't the permission for that!
+	trigger:
+		send "{@time} &7Its now &fNight&7."
+		set time to 24:00
+
+
+
+command /essential:version:
+	trigger:	
+		send "&8[&6Version&8] &7Youre on the latest Version of Essential Skript"
+		send "&cYour on Beta report bugs at: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 

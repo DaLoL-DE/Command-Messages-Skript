@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0b3       |
+#|     Version 1.0b4       |
 #|_________________________|
 
 options:
@@ -131,7 +131,7 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Du bist auf der Version 1.0b3."
+		send "&8[&6Version&8] &7Du bist auf der Version 1.0b4."
 		send "&cDu bist auf einer BETA version. Report bugs: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
@@ -167,3 +167,53 @@ command /msg [<player>] [<text>]:
 			if arg-2 is set:
 				send "&8[&6Du &8» &6%arg-1%&8] &7%arg-2%"
 				send "&8[&6%arg-1% &8» &6Du&8] &7%arg-2%" to player
+
+command /gamemode [<text>]:
+	permission: gamemode.use
+	trigger:
+		if arg-1 is "1" or "c" or "creative":
+			set player's gamemode to creative
+			send "&8[&6GameMode&8] &7Dein Spielmodus wurde auf &aCreative&7 gesetzt."
+		if arg-1 is "0" or "s" or "survival":
+			set player's gamemode to survival
+			send "&8[&6GameMode&8] &7Dein Spielmodus wurde auf &aSurvival&7 gesetzt."
+		if arg-1 is "20" or "a" or "adventure":
+			set player's gamemode to adventure
+			send "&8[&6GameMode&8] &7Dein Spielmodus wurde auf &aAdventure &7gesetzt."
+		if arg-1 is "3" or "sp" or "spectator":
+			set player's gamemode to spectator
+			send "&8[&6GameMode&8] &7Dein Spielmodus wurde auf &aSpectator&7 gesetzt."
+
+
+command /vanish [<text>]:
+	permission: vanish-use
+	trigger:
+		if {vanish.%player%} is not set:
+			set {vanish.%player%} to true 
+			send "&8[&6Vanish&8] &7Du bist nun im Vanish!"
+			hide player from all players
+			stop
+		else:
+			delete {vanish.%player%}
+			send "&8[&6Vanish&8] &7Du bist nun nicht mehr im Vanish!"
+			reveal player from all players
+			stop
+
+command /fly [<text>]:
+	permission: fly.use 
+	trigger:
+		if {fly.%player%} is not set:
+			set {fly.%player%} to true 
+			set player's flight mode to true 
+			send "&8[&6Fly&8] &7Du kannst nun Fliegen!"
+			stop
+		else:
+			delete {fly.%player%}
+			set player's flight mode to false
+			send "&8[&6Fly&8] &7Du kannst nun nicht mehr Fliegen!"
+			stop
+
+
+
+on quit:
+	delete {fly.%player%}

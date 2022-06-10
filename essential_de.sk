@@ -1,0 +1,169 @@
+#__________________________
+#|                         |
+#|   Skript made by        |
+#|       DaLoL             |
+#|     Version 1.0b3       |
+#|_________________________|
+
+options:
+	prefix: &8[&6Server&8]
+	alert: &8[&6Alert&8]
+	ping: &8[&e&l!&8]
+	msg: &8[&6MSG&8]
+	heal: &8[&6Heilen&8]
+	time: &8[&6Zeit&8]
+
+
+
+command /dc:
+	trigger:
+		send "&8[&6Discord&8] &7Kennst du schon den Discord von unserem Server? wenn nicht dann joine ihn doch! &9&ndiscord.gg/"
+
+#Schablone:
+
+#command /(den Befehö):
+	#trigger:
+		#send "&aDeine Nachricht"
+
+#Entferne die "#" wenn du die Nachricht Einfügst
+
+#Automessages:
+
+on every 120 seconds:
+	broadcast ""
+	broadcast "&8» &cYou can Edit this message in the essential.sk"
+	broadcast ""
+
+#Template: (To Copy)
+
+#on every (your time in seconds):
+	#broadcast "Deine Nachricht"
+	#broadcast "Deine Nachricht"
+	#broadcast "Deine Nachricht"
+
+#Wenn du einen Leere reihe haben willst schreibe: ""
+#Entferne die "#" wenn du die Nachricht Einfügst
+
+
+#Join-Leave Nachrichten
+
+on join:
+	set join message to "&8[&a+&8] &a%player%"
+
+on quit:
+	set quit message to "&8[&c-&8] &c%player%"
+
+#you need an plugin or an other skript to remove the normal join messages!
+
+#Custom Tode nachricht
+
+on death of player:
+	broadcast "{@prefix} &a%victim% &7ist gestorben."
+
+#Werbung Befehl
+command /ad <text>:
+	permission: ad.use
+	permission message: &cDu hast dafür keine Berechtigungen!
+	trigger:
+		broadcast "&8[&6Ad&8] &7%arg-1% &8(&2%player%&8)"
+
+# Invsee Command
+
+command /invsee [<player>]:
+	permission: invsee.use
+	permission message: &cDu hast dafür keine Berechtigungen!
+	trigger:
+		if arg-1 is set:
+			open the arg-1's inventory for the player
+			send "{@prefix} &7Du hast &a%arg-1%'s &7Inventar geöffnet."
+		if arg-1 is not set:
+			send "{@prefix} &7Bitte gebe einen Spieler an."    
+
+command /alert [<text>]:
+	permission: alert.use
+	permission message: &cDu hast dafür keine Berechtigungen!
+	trigger:
+		if arg-1 is set:
+			broadcast "{@alert} &7%arg-1%"
+		if arg-1 is not set:
+			send "{@alert} &7Bitte gebe einen Spieler an."
+
+command /ping [<player>]:
+	permission: use.ping
+	permission message: {@ping} &cDu hast dafür keine Berechtigungen!
+	trigger:
+		if arg-1 is set:
+			send "{@ping} &e&l%arg-1%: &e&l%arg-1's ping%ms"
+		else:
+			send "{@ping} &e&l%player's ping%ms"
+
+
+
+command /heal [<player>]:
+	permission: heal.use
+	permission: {@heal} &cDu hast dafür keine Berechtigungen!
+	trigger:
+		if arg-1 is set:
+			heal the arg-1
+			send "{@heal} &7Du hast &a%arg-1%&7 Geheilt."
+			send "{@heal} &7Du wurdest von %player% geheilt." to arg-1
+		if arg-1 is not set:
+			heal the player
+			send "{@heal} &7Du wurdest geheilt"
+
+
+command /day:
+	permission: day.use
+	permission message: {@time} &cDu hast dafür keine Berechtigungen!
+	trigger: 
+		send "{@time} &7Es ist nun tag"
+		set time to 08:00
+
+
+command /night:
+	permission: night.use
+	permission message: {@time} &cDu hast dafür keine Berechtigungen!
+	trigger:
+		send "{@time} &7Es ist nun Nacht."
+		set time to 24:00
+
+
+
+command /essential:version:
+	trigger:	
+		send "&8[&6Version&8] &7Du bist auf der Version 1.0b3."
+		send "&cDu bist auf einer BETA version. Report bugs: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
+
+command /repair:
+	permission: repair.use
+	trigger:
+		repair tool of player
+		send "&8[&6Repair&8] &7Dein Tool wurde Repariert!"
+
+
+command /feed [<player>]:
+	permission: feed.use
+	trigger:
+		if arg-1 is not set:
+			send "&8[&6Feed&8] &7Du hast nun kein Hunger mehr!"
+			set food bar of player to 20
+		else:
+			send "&8[&6Feed&8] &7%arg-1% hat nun kein Hunger mehr!"
+			set food bar of arg-1 to 20
+
+
+command /head [<offlineplayer>]:
+	trigger:
+		if arg-1 is set:
+			give 1 of skull of "%arg-1%" parsed as offline player named "&eHead of %arg-1%" to player
+			send "&8[&6Head&8] &7Du hast %arg-1%'s Kopf bekommen!"
+		else:
+			send "&8[&6Head&8] &7Bitte gebe einen Spieler an!"
+
+
+command /msg [<player>] [<text>]:
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				send "&8[&6Du &8» &6%arg-1%&8] &7%arg-2%"
+				send "&8[&6%arg-1% &8» &6Du&8] &7%arg-2%" to player

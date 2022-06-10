@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0b3       |
+#|     Version 1.0b4       |
 #|_________________________|
 
 options:
@@ -106,6 +106,7 @@ command /heal [<player>]:
 		if arg-1 is set:
 			heal the arg-1
 			send "{@heal} &7You healed &a%arg-1%&7."
+			send "{@heal} &7You've been healed by %player%" to arg-1
 		if arg-1 is not set:
 			heal the player
 			send "{@heal} &7You've been healed"
@@ -130,7 +131,7 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Your on the version 1.0b3."
+		send "&8[&6Version&8] &7Your on the version 1.0b4."
 		send "&cYour on Beta report bugs at: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
@@ -168,3 +169,62 @@ command /msg [<player>] [<text>]:
 				send "&8[&6%arg-1% &8» &6You&8] &7%arg-2%" to player
 
 
+command /gamemode [<text>]:
+	permission: gamemode.use
+	trigger:
+		if arg-1 is "1" or "c" or "creative":
+			set player's gamemode to creative
+			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aCreative&7."
+		if arg-1 is "0" or "s" or "survival":
+			set player's gamemode to survival
+			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aSurvival&7."
+		if arg-1 is "20" or "a" or "adventure":
+			set player's gamemode to adventure
+			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aAdventure&7."
+		if arg-1 is "3" or "sp" or "spectator":
+			set player's gamemode to spectator
+			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aSpectator&7."
+
+
+command /vanish [<text>]:
+	permission: vanish-use
+	trigger:
+		if {vanish.%player%} is not set:
+			set {vanish.%player%} to true 
+			send "&8[&6Vanish&8] &7You are now in Vanish Mode!"
+			hide player from all players
+			stop
+		else:
+			delete {vanish.%player%}
+			send "&8[&6Vanish&8] &7You are no more in Vanish Mode!"
+			reveal player from all players
+			stop
+
+
+command /tp [<player>]:
+	permission: tp.use 
+	trigger:
+		if arg-1 is set:
+			teleport player to arg-1
+			send "&8[&6TP&8] &7You teleported to &a%arg-1%&7."
+		if arg-1 is not set:
+			send "&8[&6TP&8] &7Please define a Player!"
+
+command /fly [<text>]:
+	permission: fly.use 
+	trigger:
+		if {fly.%player%} is not set:
+			set {fly.%player%} to true 
+			set player's flight mode to true 
+			send "&8[&6Fly&8] &7Youre now in flight mode!"
+			stop
+		else:
+			delete {fly.%player%}
+			set player's flight mode to false
+			send "&8[&6Fly&8] &7Youre now not more in Flight mode!"
+			stop
+
+
+
+on quit:
+	delete {fly.%player%}

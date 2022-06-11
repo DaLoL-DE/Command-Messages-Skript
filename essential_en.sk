@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0b4       |
+#|     Version 1.0b5       |
 #|_________________________|
 
 options:
@@ -131,7 +131,7 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Your on the version 1.0b4."
+		send "&8[&6Version&8] &7Your on the version 1.0b5."
 		send "&cYour on Beta report bugs at: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
@@ -171,6 +171,7 @@ command /msg [<player>] [<text>]:
 
 command /gamemode [<text>]:
 	permission: gamemode.use
+	aliases: gm
 	trigger:
 		if arg-1 is "1" or "c" or "creative":
 			set player's gamemode to creative
@@ -228,3 +229,29 @@ command /fly [<text>]:
 
 on quit:
 	delete {fly.%player%}
+
+
+
+command /nv <text>:
+	permission: nightvison
+	usage: &8[&6Nightvision&8] &7Usage: &e/nv on/off&7.
+	trigger:
+		if arg-1 is "on":
+			send "&8[&6Nightvision&8] &7You've &aenabled&7 Nightvison."
+			make console execute command "effect give %player% minecraft:night_vision 999999 1 true"
+		if arg-1 is "off":
+			send "&8[&6Nightvision&8] &7You've &cdisabled &7Nightvison."
+			make console execute command "effect clear %player%"
+		if arg-1 is not set:
+			send "&8[&7Nightvison&8] &7Usage: &e/nv on/off"
+
+
+command /rules:
+	trigger:
+		send "&8---[&6Rules&8]---"
+		send "&8[&61&8] &7Don't curse in Chat."
+		send "&8[&62&8] &7Don't Cheat."
+		send "&8[&63&8] &7Don't DDoS the Server"
+		send "&8[&64&8] &7You Can edit this in the essential_en.sk"
+		send "&8---[&6Rules&8]---"
+

@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0b4       |
+#|     Version 1.0b5       |
 #|_________________________|
 
 options:
@@ -21,7 +21,7 @@ command /dc:
 
 #Schablone:
 
-#command /(den Befehö):
+#command /(den Befehl):
 	#trigger:
 		#send "&aDeine Nachricht"
 
@@ -131,7 +131,7 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Du bist auf der Version 1.0b4."
+		send "&8[&6Version&8] &7Du bist auf der Version 1.0b5."
 		send "&cDu bist auf einer BETA version. Report bugs: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
@@ -217,3 +217,28 @@ command /fly [<text>]:
 
 on quit:
 	delete {fly.%player%}
+
+
+command /nv <text>:
+	permission: nightvison
+	permission message: &8[&6Nachtsicht&8] &7Du hast keine berechtigungen für diesen Befehl.
+	usage: &8[&6Nachtsicht&8] &7Richtige benutzung: &e/nv an/aus&7.
+	trigger:
+		if arg-1 is "an":
+			send "&8[&6Nachtsicht&8] &7Du hast deine Nachtsicht &aaktiviert&7."
+			make console execute command "effect give %player% minecraft:night_vision 999999 1 true"
+		if arg-1 is "aus":
+			send "&8[&6Nachtsicht&8] &7Du hast deine Nachtsicht &cdeaktiviert&7."
+			make console execute command "effect clear %player%"
+		if arg-1 is not set:
+			send "&8[&7Nachtsicht&8] &7Du kannst nur an/aus angeben!"
+
+command /rules:
+	trigger:
+		send "&8---[&6Rules&8]---"
+		send "&8[&61&8] &7Keine Beleidigungen im Chat"
+		send "&8[&62&8] &7Benutze keine Hackclients"
+		send "&8[&63&8] &7Du darfst den Server nicht DDoS'en"
+		send "&8[&64&8] &7Du kannst das hier in der essential_de.sk ändern"
+		send "&8---[&6Rules&8]---"
+

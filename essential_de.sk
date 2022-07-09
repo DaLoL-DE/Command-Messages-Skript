@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0b5       |
+#|     Version 1.0         |
 #|_________________________|
 
 options:
@@ -13,6 +13,11 @@ options:
 	heal: &8[&6Heilen&8]
 	time: &8[&6Zeit&8]
 
+on load:
+	send "-----------------------" to console
+	send "  Essential Skript" to console
+	send "Skript made by DaLoL" to console
+	send "-----------------------" to console
 
 
 command /dc:
@@ -131,8 +136,8 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Du bist auf der Version 1.0b5."
-		send "&cDu bist auf einer BETA version. Report bugs: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
+		send "&8[&6Version&8] &7Du bist auf der Version 1.0."
+		send "&cBug Gefunden? Hier Reporten: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
 	permission: repair.use
@@ -242,3 +247,48 @@ command /rules:
 		send "&8[&64&8] &7Du kannst das hier in der essential_de.sk ändern"
 		send "&8---[&6Rules&8]---"
 
+on every second:
+	loop all players:
+		set action bar of loop-player to "&8» &aDu kannst das hier in der essential_de.sk ändern"
+
+
+on join:
+	loop all players:
+		set {Online} to number of all players
+		set tab header to "YourServer.de %nl%&2Online: &a%{Online}%" and footer to "&7Du kannst das hier in der essential_de.sk ändern" for loop-player
+
+command /clearchat:
+	permission: clearchat.admin
+	aliases: cc
+	trigger:
+		loop 200 times:
+			broadcast "&7"
+		broadcast "&8[&6ChatClear&8] &a%player% &7hat den Chat gefiltert."
+
+on server ping:
+	set motd to "&6YourServer.de &8| &7Einzigartiger Vanilla Server!%nl%&eDu kannst das hier in der essential_de.sk ändern"
+
+on chat:
+	loop all players:
+		if player has permission "chat.owner":
+			cancel event
+			broadcast "&8|%nl%&8| &4Owner &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player has permission "chat.admin":
+			cancel event
+			broadcast "&8|%nl%&8| &cAdmin &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player has permission "chat.mod":
+			cancel event
+			broadcast "&8|%nl%&8| &cMod &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player has permission "chat.dev":
+			cancel event
+			broadcast "&8|%nl%&8| &bDev &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player doesn't have permission "chat.owner" or "chat.admin" or "chat.mod" or "chat.dev":
+			cancel event
+			broadcast "&8| &6Player &8| &7%player% &8- &r%message%"
+
+on death of a ender dragon:
+	broadcast "&8[&6Server&8] &7Der Ender Drache wurde von %attacker% getötet! &aGG"

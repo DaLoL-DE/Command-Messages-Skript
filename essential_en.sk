@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0b5       |
+#|     Version 1.0         |
 #|_________________________|
 
 options:
@@ -13,6 +13,12 @@ options:
 	heal: &8[&6Heal&8]
 	time: &8[&6Time&8]
 
+
+on load:
+	send "-----------------------" to console
+	send "  Essential Skript" to console
+	send "Skript made by DaLoL" to console
+	send "-----------------------" to console
 
 
 command /dc:
@@ -31,7 +37,7 @@ command /dc:
 
 on every 120 seconds:
 	broadcast ""
-	broadcast "&8» &cYou can Edit this message in the essential.sk"
+	broadcast "&8» &cGo to Plugins then to skript then to scripts and edit this here in the essential.sk"
 	broadcast ""
 
 #Template: (To Copy)
@@ -52,6 +58,7 @@ on join:
 
 on quit:
 	set quit message to "&8[&c-&8] &c%player%"
+
 
 #you need an plugin or an other skript to remove the normal join messages!
 
@@ -131,8 +138,8 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Your on the version 1.0b5."
-		send "&cYour on Beta report bugs at: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
+		send "&8[&6Version&8] &7Your on the version 1.0."
+		send "&cFound a Bug? Report it here: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
 	permission: repair.use
@@ -175,16 +182,16 @@ command /gamemode [<text>]:
 	trigger:
 		if arg-1 is "1" or "c" or "creative":
 			set player's gamemode to creative
-			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aCreative&7."
+			send "&8[&6GameMode&8] &7Your gamemode has been set to &aCreative&7."
 		if arg-1 is "0" or "s" or "survival":
 			set player's gamemode to survival
-			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aSurvival&7."
+			send "&8[&6GameMode&8] &7Your gamemode has been set to &aSurvival&7."
 		if arg-1 is "20" or "a" or "adventure":
 			set player's gamemode to adventure
-			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aAdventure&7."
+			send "&8[&6GameMode&8] &7Your gamemode has been set to &aAdventure&7."
 		if arg-1 is "3" or "sp" or "spectator":
 			set player's gamemode to spectator
-			send "&8[&6GameMode&8] &7Youre gamemode has been set to &aSpectator&7."
+			send "&8[&6GameMode&8] &7Your gamemode has been set to &aSpectator&7."
 
 
 command /vanish [<text>]:
@@ -255,3 +262,48 @@ command /rules:
 		send "&8[&64&8] &7You Can edit this in the essential_en.sk"
 		send "&8---[&6Rules&8]---"
 
+on every second:
+	loop all players:
+		set action bar of loop-player to "&8» &aYou can edit this in the essential_en.sk"
+
+
+on join:
+	loop all players:
+		set {Online} to number of all players
+		set tab header to "YourServer.net %nl%&2Online: &a%{Online}%" and footer to "&7You can edit this in the essential_en.sk" for loop-player
+
+command /clearchat:
+	permission: clearchat.admin
+	aliases: cc
+	trigger:
+		loop 200 times:
+			broadcast "&7"
+		broadcast "&8[&6ChatClear&8] &a%player% &7cleared the Chat."
+
+on server ping:
+	set motd to "&6YourServer.net &8| &7Unique Vanilla Server%nl%&eYou can Edit this in the essential_en.sk"
+
+on chat:
+	loop all players:
+		if player has permission "chat.owner":
+			cancel event
+			broadcast "&8|%nl%&8| &4Owner &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player has permission "chat.admin":
+			cancel event
+			broadcast "&8|%nl%&8| &cAdmin &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player has permission "chat.mod":
+			cancel event
+			broadcast "&8|%nl%&8| &cMod &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player has permission "chat.dev":
+			cancel event
+			broadcast "&8|%nl%&8| &bDev &8| &7%player% &8- &r%message%%nl%&8|"
+	loop all players:
+		if player doesn't have permission "chat.owner" or "chat.admin" or "chat.mod" or "chat.dev":
+			cancel event
+			broadcast "&8| &6Player &8| &7%player% &8- &r%message%"
+
+on death of a ender dragon:
+	broadcast "&8[&6Server&8] &7The Ender Dragon was slain by %attacker%! &aGG"

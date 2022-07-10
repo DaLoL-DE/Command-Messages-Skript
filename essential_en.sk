@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0         |
+#|  Version 1.0.1-pre_1    |
 #|_________________________|
 
 options:
@@ -138,7 +138,7 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Your on the version 1.0."
+		send "&8[&6Version&8] &7Your on the version 1.0.1-pre_1"
 		send "&cFound a Bug? Report it here: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
@@ -307,3 +307,53 @@ on chat:
 
 on death of a ender dragon:
 	broadcast "&8[&6Server&8] &7The Ender Dragon was slain by %attacker%! &aGG"
+
+command /maintenance [<text>]:
+	permission: maintenance.admin
+	permission message: "&8[&6Maintenance&8] &cYou are not authorized to do this!"
+	trigger:
+		if arg-1 is "on":
+			send "&8[&6Maintenance&8] &aMaintenance Mode is now activated."
+			set {server::maintenance} to true
+			wait 3 seconds
+			kick all players due to "&eYour&7-&bServer&a.&dcom%nl%&cThe Server is in the%nl%&cMaintenance Mode.%nl%&aWe ask for your understanding."
+
+		if arg-1 is "off":
+			send "&8[&6Maintenance&8] &4Maintenance mode is now deactivated"
+			set {server::maintenance} to false
+
+		else:
+			send "&8[&6Maintenance&8] &cPlease use /maintenance on/off !"
+
+on connect:
+	if {server::maintenance} is true:
+		if player has permission "maintenance.bypass":
+			stop
+		else if player does not have permission "maintenance.bypass":
+			kick player due to "&eYour&7-&bServer&a.&dcom%nl%&cThe server is currently%nl%&cin maintenance mode.%nl%&aWe ask for your understanding."
+			stop
+			
+on server ping:
+	if {server::maintenance} is true:
+		set max player count to -1
+		set motd to "&eYour&7-&bServer&a.&dnet &cMaintenance...%nl%&aWe ask for your understanding."
+
+
+command /tc [<text>]:
+    permission: tc.use
+    trigger:
+        if arg 1 is set:
+            loop all players:
+                if loop-player has permission "tc.use":
+                    send "&6TeamChat: &7%player%: &9%arg 1%" to loop-player
+        else:
+            send "&7Please define a message!"
+
+command /sudo [<player>] [<text>]:
+    permission: sudo.use
+    trigger:
+        if arg 1 is set:
+            if arg 2 is set:
+                make arg-1 execute command "/%arg-2%"
+                send "&cYou forced %arg-1% to run: &e/%arg-2%"
+

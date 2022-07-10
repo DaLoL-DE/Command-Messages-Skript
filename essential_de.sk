@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|     Version 1.0         |
+#|   Version 1.0-pre_1     |
 #|_________________________|
 
 options:
@@ -13,11 +13,6 @@ options:
 	heal: &8[&6Heilen&8]
 	time: &8[&6Zeit&8]
 
-on load:
-	send "-----------------------" to console
-	send "  Essential Skript" to console
-	send "Skript made by DaLoL" to console
-	send "-----------------------" to console
 
 
 command /dc:
@@ -136,8 +131,8 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Du bist auf der Version 1.0."
-		send "&cBug Gefunden? Hier Reporten: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
+		send "&8[&6Version&8] &7Du bist auf der Version 1.0.1-pre_1"
+		send "&cBug Gefunden? Reporte ihn hier: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
 	permission: repair.use
@@ -291,4 +286,54 @@ on chat:
 			broadcast "&8| &6Player &8| &7%player% &8- &r%message%"
 
 on death of a ender dragon:
-	broadcast "&8[&6Server&8] &7Der Ender Drache wurde von %attacker% getötet! &aGG"
+	broadcast "&8[&6Server&8] &7Der Enderdrache wurde von %attacker% getötet! &aGG"
+
+command /maintenance [<text>]:
+	permission: maintenance.admin
+	permission message: "&8[&6Maintenance&8] &cDu darfst das nicht!"
+	trigger:
+		if arg-1 is "on":
+			send "&8[&6Maintenance&8] &aDie Wartungsarbeiten sind nun aktiv."
+			set {server::maintenance} to true
+			wait 3 seconds
+			kick all players due to "&eYour&7-&bServer&a.&dde%nl%&cDer Server ist in%nl%&cWartungsarbeiten.%nl%&aWir sind bald wieder Online!."
+
+		if arg-1 is "off":
+			send "&8[&6Maintenance&8] &4Wartungsarbeiten sind nun deaktiviert."
+			set {server::maintenance} to false
+
+		else:
+			send "&8[&6Maintenance&8] &cBitte benutze /maintenance on/off"
+
+on connect:
+	if {server::maintenance} is true:
+		if player has permission "maintenance.bypass":
+			stop
+		else if player does not have permission "maintenance.bypass":
+			kick player due to "&eYour&7-&bServer&a.&dde%nl%&cDer Server ist in%nl%&cWartungsarbeiten.%nl%&aWir sind bald wieder Online!."
+			stop
+			
+on server ping:
+	if {server::maintenance} is true:
+		set max player count to -1
+		set motd to "&eYour&7-&bServer&a.&dde%nl%&cDer Server ist in%nl%&cWartungsarbeiten.%nl%&aWir sind bald wieder Online!."
+
+
+command /tc [<text>]:
+    permission: tc.use
+    trigger:
+        if arg 1 is set:
+            loop all players:
+                if loop-player has permission "tc.use":
+                    send "&6TeamChat: &7%player%: &9%arg 1%" to loop-player
+        else:
+            send "&7Bitte gebe eine Nachricht an."
+
+command /sudo [<player>] [<text>]:
+    permission: sudo.use
+    trigger:
+        if arg 1 is set:
+            if arg 2 is set:
+                make arg-1 execute command "/%arg-2%"
+                send "&cDu zwingst %arg-1% folgenden Befehl auszuführen: &e/%arg-2%"
+

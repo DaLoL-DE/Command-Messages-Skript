@@ -2,7 +2,7 @@
 #|                         |
 #|   Skript made by        |
 #|       DaLoL             |
-#|   Version 1.0-pre_1     |
+#|     Version 1.0.1       |
 #|_________________________|
 
 options:
@@ -13,6 +13,12 @@ options:
 	heal: &8[&6Heilen&8]
 	time: &8[&6Zeit&8]
 
+
+on load:
+	send "-----------------------" to console
+	send "  Essential Skript" to console
+	send "Skript made by DaLoL" to console
+	send "-----------------------" to console
 
 
 command /dc:
@@ -131,7 +137,7 @@ command /night:
 
 command /essential:version:
 	trigger:	
-		send "&8[&6Version&8] &7Du bist auf der Version 1.0.1-pre_1"
+		send "&8[&6Version&8] &7Du bist auf der Version 1.0.1"
 		send "&cBug Gefunden? Reporte ihn hier: &9&nhttps://github.com/DaLoL-DE/Essentials-Skript" 
 
 command /repair:
@@ -337,3 +343,64 @@ command /sudo [<player>] [<text>]:
                 make arg-1 execute command "/%arg-2%"
                 send "&cDu zwingst %arg-1% folgenden Befehl auszuführen: &e/%arg-2%"
 
+command /ban [<offlineplayer>] [<text>]:
+    permission: ban.use
+    permission message: &6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &cYou don't have Permission for this!
+    trigger:
+        if {ban.%uuid of arg 1%} is false:
+            if arg 2 is set:
+                send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Du hast %arg-1% gebannt."
+                set {ban.%uuid of arg 1%} to true
+                set {ban.reason.%uuid of arg 1%} to arg-2
+                kick arg-1 due to "&c&lBanned &8» &7Du wurdest gebannt von %player%%nl%Grund: &c%{ban.reason.%uuid of arg 1%}%"
+                broadcast "&6&lʙᴀɴ &8» &a%arg-1% &7wurde gebannt von &a%player% &7für den Grund: &c%arg-2%"
+        else:
+            send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Der Spieler exisitiert nicht oder ist schon gebannt."
+
+
+
+on connect:
+    if {ban.%uuid of player%} is not set:
+        set {ban.%uuid of player%} to false
+    else if {ban.%uuid of player%} is true:
+        kick player due to "&c&lBanned &8» &7Du wurdest gebannt von %player%%nl%Grund: &c%{ban.reason.%uuid of player%}%"
+
+
+
+
+
+command /unban [<offlineplayer>]:
+    permission: unban.use
+    permission message: &cYou haven't the permission for that! (unban.use)
+    trigger:
+        if arg 1 is set:
+            if {ban.%uuid of arg 1%} is true:
+                delete {ban.%uuid of arg 1%}
+                send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Du hast %arg 1% entbannt."
+            else:
+                send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Dieser Spieler ist nicht gebannt."
+
+
+command /kick <player> <text>:
+	permission: kick.use 
+	trigger:
+		kick the player due to "&c&lKicked &8» &7Du wurdest geckickt von %player%%nl%Grund: &c%arg-2%"
+		broadcast "&8&m            &8[&4Kick&8]&8&m            "
+		broadcast "&c%arg-1% wurde geckickt von %player%"
+		broadcast "&cGrund: &c&l&o%arg-2%"
+		broadcast "&8&m            &8[&4Kick&8]&8&m            "
+
+command /disable <text>:
+	permission: disable.admin
+	trigger:
+		if arg-1 is "automessages":
+			set {automessages} to false
+			send "&4&lᴀᴜᴛᴏᴍᴇssᴀɢᴇs &8● &cDu hast die Automessages deaktiviert"
+
+
+command /enable <text>:
+	permission: enable.admin
+	trigger:
+		if arg-1 is "automessages":
+			set {automessages} to true
+			send "&4&lᴀᴜᴛᴏᴍᴇssᴀɢᴇs &8● &aDu hast die Automessages aktiviert."
